@@ -12,22 +12,26 @@
     .container {
         @apply max-w-full w-[1440px] px-5 mx-auto
     }
+
     .btn {
         @apply bg-primaryColor py-[15px] px-[35px] rounded-[50px] text-white font-[600] mt-[38px]
     }
+
     .heading {
         @apply text-[44px] leading-[54px] font-[700] text-headingColor
     }
+
     .text__para {
         @apply text-[18px] leading-[30px] font-[400] text-textColor mt-[20px]
     }
 }
 
-@media only screen  and (max-width: 1024px) {
+@media only screen and (max-width: 1024px) {
     @layer components {
         .container {
             @apply max-w-full
         }
+
         section {
             @apply py-[35px]
         }
@@ -39,6 +43,7 @@
         .heading {
             @apply text-[26px] leading-[40px]
         }
+
         .text__para {
             @apply text-[16px] leading-[26px]
         }
