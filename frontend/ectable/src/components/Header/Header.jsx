@@ -8,16 +8,16 @@ const NavLinks = [
     display: "Home",
   },
   {
-    path: "/restaurants",
-    display: "restaurants",
+    path: "/restaurantList",
+    display: "Restaurants",
   },
   {
     path: "/services",
-    display: "services",
+    display: "Services",
   },
   {
     path: "/contact",
-    display: "contact",
+    display: "Contact",
   },
 ];
 

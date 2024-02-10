@@ -3,8 +3,8 @@ import Services from "../pages/Services";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Contact from "../pages/Contact";
-import restaurantDetail from "../pages/Restaurants/restaurantDetail";
-import restaurantList from "../pages/Restaurants/restaurantList";
+import RestaurantDetail from "../pages/Restaurants/RestaurantDetail";
+import RestaurantList from "../pages/Restaurants/RestaurantList";
 
 import { Routes, Route } from "react-router-dom";
 const Routers = () => {
@@ -16,8 +16,8 @@ const Routers = () => {
       <Route path="/Login" element={<Login />} />
       <Route path="/Signup" element={<Signup />} />
       <Route path="/Contact" element={<Contact />} />
-      <Route path="/restaurantDetail" element={<restaurantDetail />} />
-      <Route path="/restaurantList" element={<restaurantList />} />
+      <Route path="/RestaurantDetail" element={<RestaurantDetail />} />
+      <Route path="/RestaurantList" element={<RestaurantList />} />
     </Routes>
   );
 };
