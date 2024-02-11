@@ -53,7 +53,7 @@ const Header = () => {
 
         {/*==== Nav Right ====*/}
         <div className="flex items-center gap-4">
-          <div>
+          <div className="hidden">
             <Link to="/">
               <figure className="w-[35px] h-[35px] rounded-full cursor-pointer">
                 <img
@@ -70,8 +70,7 @@ const Header = () => {
               Login
             </button>
           </Link>
-
-          <span className="text-[#000000] text-[16px] leading-7 font-[500]">
+          <span className="md:hidden">
             <BiMenu className="w-6 h-6 cursor-pointer" />
           </span>
         </div>
