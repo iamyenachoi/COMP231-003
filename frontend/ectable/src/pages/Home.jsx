@@ -5,6 +5,7 @@ import icon01 from "../assets/images/icon01.png";
 import icon02 from "../assets/images/icon02.png";
 import icon03 from "../assets/images/icon03.png";
 import About from "../components/About/About";
+import RestaurantList from "./Restaurants/RestaurantList";
 
 const Home = () => {
   return (
@@ -78,7 +79,12 @@ const Home = () => {
             </Link>
           </div>
         </div>
-        <About />
+        <section>
+          <About />
+        </section>
+        <section>
+          <RestaurantList />
+        </section>
       </div>
     </>
   );
