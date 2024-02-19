@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const RestaurantsSchema = new mongoose.Schema(
 {
   name: { type: String, required: true, unique: true },
-  location: { type: String, required: true, unique: true },
-  photo: { type: String, required: false },
+  location: { type: String},
+  photo: { type: String},
   rating: { type: Number },
   cuisine: { type: String },
   price: { type: Number },
