@@ -3,7 +3,7 @@ const express = require("express");
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
 // The router will be added as a middleware and will take control of requests starting with path /record.
-const recordRoutes = express.Router();
+const restaurantRoutes = express.Router();
 
 // This will help us connect to the database
 const dbo = require("../db/conn");
@@ -14,7 +14,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 // This section will help you get a list of all the records.
 // get all restaurants 
-recordRoutes.route("/Restaurants").get(async function (req, response) {
+restaurantRoutes.route("/Restaurants").get(async function (req, response) {
     let db_connect = dbo.getDb();
 
     try {
@@ -30,7 +30,7 @@ recordRoutes.route("/Restaurants").get(async function (req, response) {
   });
 
 //register new restaurant
-  recordRoutes.route("/Restaurants/register").post(async (req,res)=>{
+  restaurantRoutes.route("/Restaurants/register").post(async (req,res)=>{
     const db_connect = dbo.getDb();
     
     const restaurant = {
@@ -62,7 +62,7 @@ recordRoutes.route("/Restaurants").get(async function (req, response) {
         
 
 // This section will help you get a single record by id
-recordRoutes.route("/Restaurants/:id").get(async (req, res) =>{
+restaurantRoutes.route("/Restaurants/:id").get(async (req, res) =>{
     let db_connect = dbo.getDb();
     let myquery = { _id: new ObjectId(req.params.id) };
     const data = await db_connect
@@ -80,7 +80,7 @@ recordRoutes.route("/Restaurants/:id").get(async (req, res) =>{
 });
 
 // This section will help you create a new record.
-recordRoutes.route("/record/add").post(function (req, response) {
+restaurantRoutes.route("/record/add").post(function (req, response) {
  let db_connect = dbo.getDb();
  let myobj = {
    name: req.body.name,
@@ -94,7 +94,7 @@ recordRoutes.route("/record/add").post(function (req, response) {
 });
 
 // This section will help you update a record by id.
-recordRoutes.route("/Restaurants/:id/update").post(async (req, response) =>{
+restaurantRoutes.route("/Restaurants/:id/update").post(async (req, response) =>{
   
   let db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
@@ -127,7 +127,7 @@ recordRoutes.route("/Restaurants/:id/update").post(async (req, response) =>{
 
 
 // This section will help you delete a record
-recordRoutes.route("/Restaurants/:id/delete").delete((req, response) => {
+restaurantRoutes.route("/Restaurants/:id/delete").delete(async (req, response) => {
  let db_connect = dbo.getDb();
  let myquery = { _id: new ObjectId(req.params.id) };
  db_connect.collection("Restaurants").findOneAndDelete(myquery, function (err, res) {
@@ -147,4 +147,4 @@ recordRoutes.route("/Restaurants/:id/delete").delete((req, response) => {
 
 
 
-module.exports = recordRoutes;
+module.exports = restaurantRoutes;

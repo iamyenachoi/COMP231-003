@@ -34,16 +34,65 @@ dinerRoutes.route("/Diner/register").post(async (req,res) =>{
         }
   })      
 
+dinerRoutes.route("/Diner").get(async function (req, response) {
+    let db_connect = dbo.getDb();
+
+    try {
+      var records = await db_connect
+        .collection("Diner")
+        .find({})
+        .toArray();
+      response.json(records);
+    } catch (e) {
+      console.log("An error occurred pulling the records. " + e);
+    }
+
+  });
+
 dinerRoutes.route('/Diner/:id').get(async (req, res) => {
     const db_connect = dbo.getDb();
-    const id = req.params.id;
-    console.log(id)
-    await db_connect.findById(id,'Diner')
-    .exec()
-    .then((result)=>
-        console.log(`Result : {result}`)
-    ).catch((err)=>console.log(err))
+    let myquery = { _id: new ObjectId(req.params.id) };
+    const data = await db_connect.collection("Diner").findOne(myquery);
+   
+    if(data){
+      console.log(data);
+      console.log(myquery._id)
+      res.json(data)
+    }else{
+      console.log("data is not found")
+    }
 })
     
 
-module.exports  = DinerRoutes;
+dinerRoutes.route("/Diner/:id/update").post(async (req, response) =>{
+  
+  let db_connect = dbo.getDb();
+  let myquery = { _id: new ObjectId(req.params.id) };
+  
+  let update = {};
+  let query = ['email', 'password', 'name', 'phone']
+
+  for(let check of query){
+    if(req.query[check]!= null && req.query[check]!= undefined){
+        update[check]=req.query[check];
+    }
+  }
+  
+  let newvalues = {
+    $set: update
+  };
+    const result = await db_connect
+    .collection("Diner")
+    .findOneAndUpdate(myquery, newvalues,{returnDocument: 'after'})
+    .then((res)=>
+    {console.log(res);
+      response.json(res)
+    }).catch((err)=>{
+      console.log(err);
+      response.json(err);
+    })
+
+});
+
+module.exports  = dinerRoutes;
+
