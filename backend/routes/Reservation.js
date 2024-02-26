@@ -11,6 +11,6 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-reservationRoutes("/Restaurants/:id/Reservations", (req, res) => {
+// reservationRoutes("/Restaurants/:id/Reservations", (req, res) => {
 
-})
+// })

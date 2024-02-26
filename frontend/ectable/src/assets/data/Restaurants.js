@@ -23,7 +23,7 @@ export const Restaurants = [
     cuisine: "Coffee shop",
     price: "$",
     description: "Home of Canada's favourite coffee. Join Tims™ Rewards and start earning rewards today. "
-}
+},
 {
     id:"03",
     name :"starbucks",

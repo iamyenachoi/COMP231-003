@@ -11,6 +11,7 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+const authToken = require('../Auth/token');
 
 // This section will help you get a list of all the records.
 // get all restaurants 
@@ -62,7 +63,7 @@ restaurantRoutes.route("/Restaurants").get(async function (req, response) {
         
 
 // This section will help you get a single record by id
-restaurantRoutes.route("/Restaurants/:id").get(async (req, res) =>{
+restaurantRoutes.route("/Restaurants/:id").get(authToken, async (req, res) =>{
     let db_connect = dbo.getDb();
     let myquery = { _id: new ObjectId(req.params.id) };
     const data = await db_connect
@@ -79,22 +80,22 @@ restaurantRoutes.route("/Restaurants/:id").get(async (req, res) =>{
     }
 });
 
-// This section will help you create a new record.
-restaurantRoutes.route("/record/add").post(function (req, response) {
- let db_connect = dbo.getDb();
- let myobj = {
-   name: req.body.name,
-   position: req.body.position,
-   level: req.body.level,
- };
- db_connect.collection("records").insertOne(myobj, function (err, res) {
-   if (err) throw err;
-   response.json(res);
- });
-});
+// // This section will help you create a new record.
+// restaurantRoutes.route("/record/add").post(function (req, response) {
+//  let db_connect = dbo.getDb();
+//  let myobj = {
+//    name: req.body.name,
+//    position: req.body.position,
+//    level: req.body.level,
+//  };
+//  db_connect.collection("records").insertOne(myobj, function (err, res) {
+//    if (err) throw err;
+//    response.json(res);
+//  });
+// });
 
 // This section will help you update a record by id.
-restaurantRoutes.route("/Restaurants/:id/update").post(async (req, response) =>{
+restaurantRoutes.route("/Restaurants/:id/update").post(authToken, async (req, response) =>{
   
   let db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
@@ -127,7 +128,7 @@ restaurantRoutes.route("/Restaurants/:id/update").post(async (req, response) =>{
 
 
 // This section will help you delete a record
-restaurantRoutes.route("/Restaurants/:id/delete").delete(async (req, response) => {
+restaurantRoutes.route("/Restaurants/:id/delete").delete(authToken, async (req, response) => {
  let db_connect = dbo.getDb();
  let myquery = { _id: new ObjectId(req.params.id) };
  db_connect.collection("Restaurants").findOneAndDelete(myquery, function (err, res) {

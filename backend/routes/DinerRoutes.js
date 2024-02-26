@@ -12,6 +12,9 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+const authToken = require('../Auth/token')
+console.log(authToken);
+
 dinerRoutes.route("/Diner/register").post(async (req,res) =>{
         const db_connect = dbo.getDb();
         const diner = {
@@ -93,6 +96,10 @@ dinerRoutes.route("/Diner/:id/update").post(async (req, response) =>{
     })
 
 });
+
+// dinerRoutes.get('/Diner/:id/protected', authToken, (req,res)=>{
+//   res.json({ message: "This is a protected route" });
+// })
 
 module.exports  = dinerRoutes;
 
