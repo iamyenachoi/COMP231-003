@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+// import { useEffect, useRef } from "react";
 import logo from "../../assets/images/logo.png";
 import { NavLink, Link } from "react-router-dom";
 import { BiMenu } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import { authLogout } from'../Auth/auth';
 const NavLinks = [
   {
     path: "/home",
@@ -22,6 +24,15 @@ const NavLinks = [
 ];
 
 const Header = () => {
+  
+  const navigate = useNavigate();
+
+  const logout = () =>{
+      authLogout(navigate);
+      console.log("Loggout!");
+      
+  }
+  
   return (
     <header className="header flex items-center">
       <div className="container flex items-center justify-between w-full">
@@ -70,6 +81,11 @@ const Header = () => {
               Login
             </button>
           </Link>
+          
+            <button onClick={logout}className="bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center-justify-center rounded-[50px]">
+              Logout
+            </button>
+        
           <span className="md:hidden">
             <BiMenu className="w-6 h-6 cursor-pointer" />
           </span>
