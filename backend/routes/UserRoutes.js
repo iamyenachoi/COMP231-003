@@ -3,7 +3,7 @@ const express = require("express");
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
 // The router will be added as a middleware and will take control of requests starting with path /record.
-const dinerRoutes = express.Router();
+const UserRoutes = express.Router();
 
 // This will help us connect to the database
 const dbo = require("../db/conn");
@@ -14,9 +14,11 @@ const ObjectId = require("mongodb").ObjectId;
 const authToken = require("../Auth/token");
 console.log(authToken);
 
-dinerRoutes.route("/Diner/register").post(async (req, res) => {
+UserRoutes.route("/User/register").post(async (req, res) => {
   const db_connect = dbo.getDb();
-  const diner = {
+  console.log(req.body.email);
+
+  const user = {
     email: req.body.email,
     password: req.body.password,
     name: req.body.name,
@@ -24,13 +26,13 @@ dinerRoutes.route("/Diner/register").post(async (req, res) => {
   };
 
   const check = await db_connect
-    .collection("Diner")
-    .findOne({ email: diner.email });
+    .collection("User")
+    .findOne({ email: user.email });
 
   if (!check) {
     db_connect
-      .collection("Diner")
-      .insertOne(diner)
+      .collection("User")
+      .insertOne(user)
       .then((result) => {
         res.json(result);
         console.log(result);
@@ -39,21 +41,21 @@ dinerRoutes.route("/Diner/register").post(async (req, res) => {
   }
 });
 
-dinerRoutes.route("/Diner").get(async function (req, response) {
+UserRoutes.route("/User").get(async function (req, response) {
   let db_connect = dbo.getDb();
 
   try {
-    var records = await db_connect.collection("Diner").find({}).toArray();
+    var records = await db_connect.collection("User").find({}).toArray();
     response.json(records);
   } catch (e) {
     console.log("An error occurred pulling the records. " + e);
   }
 });
 
-dinerRoutes.route("/Diner/:id").get(async (req, res) => {
+UserRoutes.route("/User/:id").get(async (req, res) => {
   const db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
-  const data = await db_connect.collection("Diner").findOne(myquery);
+  const data = await db_connect.collection("User").findOne(myquery);
 
   if (data) {
     console.log(data);
@@ -64,7 +66,7 @@ dinerRoutes.route("/Diner/:id").get(async (req, res) => {
   }
 });
 
-dinerRoutes.route("/Diner/:id/update").post(async (req, response) => {
+UserRoutes.route("/User/:id/update").post(async (req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
 
@@ -81,7 +83,7 @@ dinerRoutes.route("/Diner/:id/update").post(async (req, response) => {
     $set: update,
   };
   const result = await db_connect
-    .collection("Diner")
+    .collection("User")
     .findOneAndUpdate(myquery, newvalues, { returnDocument: "after" })
     .then((res) => {
       console.log(res);
@@ -93,8 +95,8 @@ dinerRoutes.route("/Diner/:id/update").post(async (req, response) => {
     });
 });
 
-// dinerRoutes.get('/Diner/:id/protected', authToken, (req,res)=>{
+// UserRoutes.get('/user/:id/protected', authToken, (req,res)=>{
 //   res.json({ message: "This is a protected route" });
 // })
 
-module.exports = dinerRoutes;
+module.exports = UserRoutes;
