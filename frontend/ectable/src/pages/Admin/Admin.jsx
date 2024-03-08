@@ -1,13 +1,17 @@
 const Admin = () => {
   return (
     <>
-      <div>Admin</div>
-      <button onClick={() => (window.location.href = "/restManagement")}>
-        Go to Rest Management
-      </button>
-      <button onClick={() => (window.location.href = "/RestaurantSignup")}>
-        Go to Restaurant Signup
-      </button>
+      <div>Admin page </div>
+      <div>
+        <button onClick={() => (window.location.href = "/restManagement")}>
+          1. Go to Rest Management
+        </button>
+      </div>
+      <div>
+        <button onClick={() => (window.location.href = "/RestaurantSignup")}>
+          2. Go to Restaurant Signup
+        </button>
+      </div>
     </>
   );
 };
