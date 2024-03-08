@@ -40,6 +40,7 @@ restaurantRoutes.route("/Restaurants/register").post(async (req, res) => {
     description: req.body.description,
     opening: req.body.opening,
     closing: req.body.closing,
+    email: req.body.email,
   };
 
   const check = await db_connect
@@ -105,6 +106,7 @@ restaurantRoutes
       "closing",
       "opening",
       "phone",
+      "email",
     ];
 
     for (let check of query) {

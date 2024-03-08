@@ -17,7 +17,8 @@ content-type: application/json
   "description": "offering fresh-roasted coffee beans, tea and spices from around the wo…",
   "closing": 20,
   "opening": 12,
-  "phone": 2424242424
+  "phone": 2424242424,
+  "email" :"test@gmail.com"
 }
 
 ### get restaurant by id

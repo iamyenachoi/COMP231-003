@@ -3,9 +3,11 @@ import Services from "../pages/Services";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Contact from "../pages/Contact";
-import Admin from "../pages/Admin";
-import RestaurantDetail from "../pages/Restaurants/RestaurantDetail";
-import RestaurantList from "../pages/Restaurants/RestaurantList";
+import Admin from "../pages/Admin/Admin";
+import RestManagement from "../pages/Admin/RestManagement";
+import RestaurantSignup from "../pages/Admin/RestaurantSignup";
+import RestaurantDetail from "../pages/Restaurants/RestaurantDetail.jsx";
+import RestaurantList from "../pages/Restaurants/RestaurantList.jsx";
 import ProtectedRoute from "../components/ProtectedRoutes.jsx";
 
 import { Routes, Route } from "react-router-dom";
@@ -23,6 +25,8 @@ const Routers = () => {
 
       <Route element={<ProtectedRoute />}>
         <Route path="/Admin" element={<Admin />} />
+        <Route path="/RestManagement" element={<RestManagement />} />
+        <Route path="/RestaurantSignup" element={<RestaurantSignup />} />
       </Route>
     </Routes>
   );
