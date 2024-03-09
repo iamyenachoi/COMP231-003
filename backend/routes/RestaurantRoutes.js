@@ -29,7 +29,6 @@ restaurantRoutes.route("/Restaurants").get(async function (req, response) {
 //register new restaurant
 restaurantRoutes.route("/Restaurants/register").post(async (req, res) => {
   const db_connect = dbo.getDb();
-
   const restaurant = {
     name: req.body.name,
     location: req.body.location,

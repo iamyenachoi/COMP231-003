@@ -29,7 +29,6 @@ ReservationRoutes.route("/Reservation").get(async function (req, response) {
 //register new restaurant
 ReservationRoutes.route("/Reservation/register").post(async (req, res) => {
   const db_connect = dbo.getDb();
-
   const Reservation = {
     id: req.body.id,
     date: req.body.date,
@@ -41,6 +40,8 @@ ReservationRoutes.route("/Reservation/register").post(async (req, res) => {
   const check = await db_connect
     .collection("Reservation")
     .findOne({ name: Reservation.id });
+
+  console.log(Reservation);
 
   if (!check) {
     db_connect

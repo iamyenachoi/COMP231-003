@@ -70,9 +70,8 @@ content-type: application/json
 
 {
     "id": "65cbdcf6e140698bfe3702a0",
-
   "Date": "2023-12-25",
   "Time": "12:00",
   "People": "5",
-  "MenuSelection": "Steak"
+  "MenuSelection": "Salmon"
 }
