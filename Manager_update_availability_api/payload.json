@@ -1,7 +1,0 @@
-// Json Payload
-
-{
- "restaurant_id": "<restaurant_id>",
- "date": "<date>",
- "time_slots": ["<time_slot_1>", "<time_slot_2>"]
-}
