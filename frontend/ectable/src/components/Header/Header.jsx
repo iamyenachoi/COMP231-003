@@ -25,6 +25,10 @@ const NavLinks = [
     path: "/Signup",
     display: "Signup",
   },
+  {
+    path: "/BookingPage",
+    display: "BookingPage",
+  },
 ];
 
 const Header = () => {
