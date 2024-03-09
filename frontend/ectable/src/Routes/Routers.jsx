@@ -6,9 +6,10 @@ import Contact from "../pages/Contact";
 import Admin from "../pages/Admin/Admin";
 import RestManagement from "../pages/Admin/RestManagement";
 import RestaurantSignup from "../pages/Admin/RestaurantSignup";
-import RestaurantDetail from "../pages/Restaurants/RestaurantDetail.jsx";
-import RestaurantList from "../pages/Restaurants/RestaurantList.jsx";
-import ProtectedRoute from "../components/ProtectedRoutes.jsx";
+import RestaurantDetail from "../pages/Restaurants/RestaurantDetail";
+import RestaurantList from "../pages/Restaurants/RestaurantList";
+import ProtectedRoute from "../components/ProtectedRoutes";
+import BookingPage from "../pages/BookingPage";
 
 import { Routes, Route } from "react-router-dom";
 const Routers = () => {
@@ -22,6 +23,7 @@ const Routers = () => {
       <Route path="/Contact" element={<Contact />} />
       <Route path="/RestaurantDetail" element={<RestaurantDetail />} />
       <Route path="/RestaurantList" element={<RestaurantList />} />
+      <Route path="/BookingPage" element={<BookingPage />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/Admin" element={<Admin />} />
