@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Restaurant Manager & Owner</title>
+ <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+ <h1>Restaurant Manager Availability Management</h1>
+ <form id="availabilityForm">
+ <label for="restaurantId">Restaurant ID:</label>
+ <input type="text" id="restaurantId" name="restaurantId" required><br><br>
+ 
+ <label for="date">Date:</label>
+ <input type="date" id="date" name="date" required><br><br>
+ 
+ <label for="timeSlots">Time Slots:</label>
+ <input type="text" id="timeSlots" name="timeSlots" required><br><br>
+ 
+ <button type="submit">Submit</button>
+ </form>
+
+ <h1>Restaurant Owner Data Access</h1>
+ <form id="ownerAccessForm">
+ <label for="ownerRestaurantId">Restaurant ID:</label>
+ <input type="text" id="ownerRestaurantId" name="ownerRestaurantId" required><br><br>
+ 
+ <button type="submit">View Data</button>
+ </form>
+
+ <script>
+ // Function to handle availability form submission
+ document.getElementById('availabilityForm').addEventListener('submit', function(event) {
+ event.preventDefault();
+ const form = event.target;
+ const formData = new FormData(form);
+ const requestData = {
+ restaurant_id: formData.get('restaurantId'),
+ date: formData.get('date'),
+ time_slots: formData.get('timeSlots').split(',')
+ };
+
+ fetch('/api/availability', {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json',
+ },
+ body: JSON.stringify(requestData),
+ })
+ .then(response => response.json())
+ .then(data => {
+ console.log(data.message);
+ alert(data.message);
+ })
+ .catch(error => {
+ console.error('Error:', error);
+ alert('An error occurred while updating availability.');
+ });
+ });
+
+ // Function to handle owner access form submission
+ document.getElementById('ownerAccessForm').addEventListener('submit', function(event) {
+ event.preventDefault();
+ const form = event.target;
+ const formData = new FormData(form);
+ const restaurantId = formData.get('ownerRestaurantId');
+
+ fetch(`/api/restaurants/${restaurantId}/data`)
+ .then(response => {
+ if (!response.ok) {
+ throw new Error('Restaurant not found');
+ }
+ return response.json();
+ })
+ .then(data => {
+ console.log(data);
+ alert(JSON.stringify(data));
+ })
+ .catch(error => {
+ console.error('Error:', error);
+ alert('An error occurred while fetching restaurant data.');
+ });
+ });
+ </script>
+</body>
+</html>
