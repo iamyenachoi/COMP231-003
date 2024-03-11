@@ -10,7 +10,7 @@ function App() {
   const handleCreateReservation = async () => {
     try {
       const response = await axios.post('/api/reservation/register', {
-        // Provide data for creating reservation here
+        //  Provide data for creating reservation here
       });
       console.log(response.data); // Log response from backend
       setErrorMessage('');
