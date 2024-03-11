@@ -4,10 +4,10 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
 
-// Dummy database to store availability data
+// Custom dummy database to store availability data
 let availabilityData = {};
 
-// Dummy database to store restaurant data
+// Custom database to store restaurant data
 let restaurantData = {
     "restaurant1": {
         bookings: [
