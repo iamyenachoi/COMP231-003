@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
 
-// Custom database to store availability data
+// Custom dummy database to store availability data
 let availabilityData = {};
 
 // Custom database to store restaurant data
