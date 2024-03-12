@@ -6,7 +6,6 @@ import Contact from "../pages/Contact";
 import Admin from "../pages/Admin/Admin";
 import RestManagement from "../pages/Admin/RestManagement";
 import RestaurantSignup from "../pages/Admin/RestaurantSignup";
-import RestaurantDetail from "../pages/Restaurants/RestaurantDetail";
 import RestaurantList from "../pages/Restaurants/RestaurantList";
 import ProtectedRoute from "../components/ProtectedRoutes";
 import BookingPage from "../pages/BookingPage";
@@ -21,7 +20,6 @@ const Routers = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/Services" element={<Services />} />
       <Route path="/Contact" element={<Contact />} />
-      <Route path="/RestaurantDetail" element={<RestaurantDetail />} />
       <Route path="/RestaurantList" element={<RestaurantList />} />
       <Route path="/BookingPage" element={<BookingPage />} />
 
@@ -29,6 +27,7 @@ const Routers = () => {
         <Route path="/Admin" element={<Admin />} />
         <Route path="/RestManagement" element={<RestManagement />} />
         <Route path="/RestaurantSignup" element={<RestaurantSignup />} />
+        <Route path="/BookingPage/:restaurantId" element={<BookingPage />} />
       </Route>
     </Routes>
   );
