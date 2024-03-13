@@ -1,58 +1,75 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const { db } = require('./conn'); // Import MongoDB connection instance from conn.js
 
 const app = express();
 const PORT = 3000;
 
-// Dummy database to store availability data
-let availabilityData = {};
-
-// Dummy database to store restaurant data
-let restaurantData = {
-    "restaurant1": {
-        bookings: [
-            { date: '2024-03-10', time: '18:00', customer: 'John Doe' },
-            { date: '2024-03-11', time: '19:00', customer: 'Jane Smith' }
-        ],
-        menu: [
-            { name: 'Burger', price: 10 },
-            { name: 'Pizza', price: 12 }
-        ],
-        performanceAnalytics: {
-            revenue: 1000,
-            reservations: 50,
-            ratings: 4.5
-        }
-    },
-    // Add more restaurants as needed
-};
-
 app.use(bodyParser.json());
 
+// Define MongoDB schemas and models
+const reservationSchema = new mongoose.Schema({
+  date: String,
+  time: String,
+  customer: String
+});
+const Reservation = mongoose.model('Reservation', reservationSchema);
+
+const restaurantSchema = new mongoose.Schema({
+  name: String,
+  bookings: [reservationSchema],
+  menu: [{ name: String, price: Number }],
+  performanceAnalytics: {
+    revenue: Number,
+    reservations: Number,
+    ratings: Number
+  }
+});
+const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+
 // API for Restaurant Manager Availability Management
-app.post('/api/availability', (req, res) => {
+app.post('/api/availability', async (req, res) => {
+  try {
     const { restaurant_id, date, time_slots } = req.body;
-    
+
     // Update availability data in the database
-    availabilityData[restaurant_id] = { date, time_slots };
-    
+    const restaurant = await Restaurant.findOneAndUpdate(
+      { _id: restaurant_id },
+      { $addToSet: { bookings: { $each: time_slots.map(time => ({ date, time })) } } },
+      { new: true }
+    );
+
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+
     res.json({ message: 'Availability updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error updating availability' });
+  }
 });
 
 // API for Restaurant Owner Data Access
-app.get('/api/restaurants/:restaurant_id/data', (req, res) => {
+app.get('/api/restaurants/:restaurant_id/data', async (req, res) => {
+  try {
     const { restaurant_id } = req.params;
-    
+
     // Retrieve data related to the specified restaurant from the database
-    const data = restaurantData[restaurant_id];
-    
-    if (!data) {
-        return res.status(404).json({ message: 'Restaurant not found' });
+    const restaurant = await Restaurant.findById(restaurant_id);
+
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
     }
-    
-    res.json({ data });
+
+    res.json({ data: restaurant });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving restaurant data' });
+  }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
