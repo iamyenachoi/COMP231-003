@@ -9,80 +9,41 @@ import RestaurantList from "./Restaurants/RestaurantList";
 const Home = () => {
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-[30px] mt-[30px]">
-        <div className="py-[30px] px-5">
-          <div className="flex items-center justify-center">
-            <img src={icon01} alt="" width="60" height="60" />
-          </div>
+      <div className="mt-[30px] mx-5">
+        {/* RestaurantList Section - Full Width */}
+        <section className="mb-5">
+          <RestaurantList />
+        </section>
 
-          <div className="mt-[30px]">
-            <h2 className="text-[26px] leading-9 text-headingColor font-[700 text center]">
-              Book Table in ECTable
-            </h2>
+        {/* Grid for other content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 lg:gap-[30px]">
+          {/* Book Table in ECTable Section */}
 
-            <p className="text-[16px] leading-7 text-text-Color font-[400] text-center mt-4">
-              The best place to find the best restaurants in town
-            </p>
-
-            <Link
-              to="Restaurants/RestaurantList"
-              className="w-[44px] h-[44px] rounded-full border border-solid mt-auto flex items-center justify-center  bg-primary-Color hover:bg-primaryColor hover:border-none"
-            >
-              <BsArrowRight className="group-hover:text-white w-6 h-5" />
-            </Link>
-          </div>
-        </div>
-
-        <div className="py-[30px] px-5">
-          <div className="flex items-center justify-center">
-            <img src={icon02} alt="" width="60" height="60" />
-          </div>
-
-          <div className="mt-[30px]">
-            <h2 className="text-[26px] leading-9 text-headingColor font-[700 text center]">
-              See Comments for Restaurants
-            </h2>
-
-            <p className="text-[16px] leading-7 text-text-Color font-[400] text-center mt-4">
-              See Comments for over 100 Restaurants in town
-            </p>
-
-            <Link
-              to="Restaurants/RestaurantList"
-              className="w-[44px] h-[44px] rounded-full border border-solid mt-auto flex items-center justify-center  bg-primary-Color hover:bg-primaryColor hover:border-none"
-            >
-              <BsArrowRight className="group-hover:text-white w-6 h-5" />
-            </Link>
+          {/* Register your Restaurants Section */}
+          <div className="py-[30px]">
+            <div className="flex items-center justify-center">
+              <img src={icon03} alt="" width="60" height="60" />
+            </div>
+            <div className="mt-[30px]">
+              <h2 className="text-[26px] leading-9 text-headingColor font-[700] text-center">
+                Register your Restaurants
+              </h2>
+              <p className="text-[16px] leading-7 text-textColor font-[400] text-center mt-4">
+                Start with ECTable and get more customers
+              </p>
+              <Link
+                to="/Signup"
+                className="w-[44px] h-[44px] rounded-full border border-solid mt-auto flex items-center justify-center bg-primaryColor hover:bg-primaryColor hover:border-none"
+              >
+                <BsArrowRight className="text-white w-6 h-5" />
+              </Link>
+            </div>
           </div>
         </div>
 
-        <div className="py-[30px] px-5">
-          <div className="flex items-center justify-center">
-            <img src={icon03} alt="" width="60" height="60" />
-          </div>
-
-          <div className="mt-[30px]">
-            <h2 className="text-[26px] leading-9 text-headingColor font-[700 text center]">
-              Register your Restaurants
-            </h2>
-
-            <p className="text-[16px] leading-7 text-text-Color font-[400] text-center mt-4">
-              Start with ecTable and get more customers
-            </p>
-
-            <Link
-              to="Restaurants/RestaurantList"
-              className="w-[44px] h-[44px] rounded-full border border-solid mt-auto flex items-center justify-center  bg-primary-Color hover:bg-primaryColor hover:border-none"
-            >
-              <BsArrowRight className="group-hover:text-white w-6 h-5" />
-            </Link>
-          </div>
-        </div>
+        {/* About Section */}
         <section>
           <About />
-        </section>
-        <section>
-          <RestaurantList />
         </section>
       </div>
     </>

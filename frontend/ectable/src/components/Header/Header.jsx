@@ -10,24 +10,12 @@ const NavLinks = [
     display: "Home",
   },
   {
-    path: "/restaurantList",
+    path: "/RestaurantList",
     display: "Restaurants",
-  },
-  {
-    path: "/services",
-    display: "Services",
-  },
-  {
-    path: "/contact",
-    display: "Contact",
   },
   {
     path: "/Signup",
     display: "Signup",
-  },
-  {
-    path: "/BookingPage",
-    display: "BookingPage",
   },
 ];
 

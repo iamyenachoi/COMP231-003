@@ -1,4 +1,5 @@
 // eslint-disable-next-line no-unused-vars
+
 import React, { useState } from "react";
 import {
   FormControl,
@@ -8,19 +9,24 @@ import {
   Button,
   MenuItem,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from "@material-ui/core";
+import { useParams } from "react-router-dom";
 
 import { create } from "./api-Reservation";
 
 const BookingPage = () => {
+  const { restaurantId } = useParams();
+  const [openDialog, setOpenDialog] = useState(false);
+
   const [bookingDetails, setBookingDetails] = useState({
     date: "",
     time: "",
     people: "",
     menuSelection: [],
   });
-
-  const [open, setOpen] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +36,7 @@ const BookingPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const Reservation = {
-      id: "65cbdcf6e140698bfe3702a0",
+      id: restaurantId,
       date: bookingDetails.date || undefined,
       time: bookingDetails.time || undefined,
       people: bookingDetails.people || undefined,
@@ -40,10 +46,16 @@ const BookingPage = () => {
     create(Reservation).then((data) => {
       if (data.error) {
         setBookingDetails({ ...bookingDetails, error: data.error });
+        setOpenDialog(false);
       } else {
-        setOpen(true);
+        setOpenDialog(true);
       }
     }); // Add logic here to send booking details to your backend
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+    // Additional logic to redirect the user or reset the form
   };
 
   const menuItems = [
@@ -119,6 +131,15 @@ const BookingPage = () => {
           Book Now
         </Button>
       </form>
+      <Dialog open={openDialog} onClose={handleClose}>
+        <DialogTitle>Booking Successful</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <FormControl component="fieldset">
         <Typography variant="h6">Select Menu Items</Typography>
         {menuItems.map((item) => (

@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-export const authLogin = async (email, password, navigate) => {
+export const authLogin = async (email, password, url) => {
   try {
     const response = await axios.post("http://localhost:5500/diner/login", {
       email: email,
@@ -34,7 +34,8 @@ export const authLogin = async (email, password, navigate) => {
       console.log("Refresh Token", Cookies.get("refreshToken"));
       console.log("User Id", Cookies.get("userId"));
       // navigate(`/diner/${data.id}`)
-      navigate("/Admin");
+      console.log(url);
+      window.location.href = url;
     }
   } catch (e) {
     console.log(e);
