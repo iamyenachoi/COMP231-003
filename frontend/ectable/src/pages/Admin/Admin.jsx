@@ -4,7 +4,7 @@ const Admin = () => {
       <div>Admin page </div>
       <div>
         <button onClick={() => (window.location.href = "/restManagement")}>
-          1. Go to Rest Management
+          1. Go to Restaurant Management
         </button>
       </div>
       <div>

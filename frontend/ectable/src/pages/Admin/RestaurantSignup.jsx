@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
@@ -16,6 +16,14 @@ import {
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { create } from "./api-Restaurant";
+import { useParams } from "react-router-dom";
+
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+  return null; // Return null if cookie is not found
+};
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -47,6 +55,8 @@ const useStyles = makeStyles((theme) => ({
 // };
 
 export default function RestaurantSignup() {
+  const { default_admin_email } = useParams();
+
   const classes = useStyles();
 
   const [values, setValues] = useState({
@@ -61,7 +71,33 @@ export default function RestaurantSignup() {
     opening: "",
     phone: "",
     email: "",
+    adminEmail: "",
+    readonlyEmail: "",
   });
+
+  useEffect(() => {
+    const userID = getCookie("userId");
+    if (userID) {
+      fetch(`http://localhost:5500/Diner/${userID}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.email) {
+            setValues((prevValues) => ({
+              ...prevValues,
+              adminEmail: data.email,
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+  }, []);
 
   const [open, setOpen] = useState(false);
 
@@ -86,6 +122,8 @@ export default function RestaurantSignup() {
       closing: values.closing || undefined,
       opening: values.opening || undefined,
       phone: values.phone || undefined,
+      adminEmail: values.adminEmail || undefined,
+      readonlyEmail: values.readonlyEmail || undefined,
     };
 
     create(restaurant).then((data) => {
@@ -194,6 +232,24 @@ export default function RestaurantSignup() {
             value={values.phone}
             onChange={handleChange("phone")}
             type="phone"
+            margin="normal"
+          />
+          <TextField
+            id="adminEmail"
+            label="Admin Account Email"
+            className={classes.textField}
+            value={values.adminEmail}
+            onChange={handleChange("adminEmail")}
+            disabled
+            margin="normal"
+            defaultValue={default_admin_email}
+          />
+          <TextField
+            id="readonlyEmail"
+            label="Read Only Account Email"
+            className={classes.textField}
+            value={values.readonlyEmail}
+            onChange={handleChange("readonlyEmail")}
             margin="normal"
           />
         </CardContent>
