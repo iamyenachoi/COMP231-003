@@ -38,6 +38,17 @@ GET  http://localhost:5500/Diner
 
 ###
 
+### Get Diner by ID
+GET  http://localhost:5500/Diner/65d38fc4eb637c510ec07e75
+
+###
+
+### Get Diner by ID2
+GET  http://localhost:5500/Diner/65d3931f7398a8130b05167a
+
+###
+
+
 ### Diner Login
 Post http://localhost:5500/diner/login
 content-type: application/json

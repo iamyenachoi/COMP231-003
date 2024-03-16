@@ -4,6 +4,13 @@ import { useParams } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+import image1 from "../../assets/images/image1.jpg";
+import image2 from "../../assets/images/image2.jpg";
+import image3 from "../../assets/images/image3.jpg";
+import image4 from "../../assets/images/image4.jpg";
+import image5 from "../../assets/images/image5.jpg";
+import image6 from "../../assets/images/image6.jpg";
+
 // Assuming you have an API service to fetch restaurant details
 import { list } from "./api-restaurant";
 
@@ -45,6 +52,16 @@ const RestaurantList = () => {
     });
   }, []);
 
+  const imageMap = {
+    "image1.jpg": image1,
+    "image2.jpg": image2,
+    "image3.jpg": image3,
+    "image4.jpg": image4,
+    "image5.jpg": image5,
+    "image6.jpg": image6,
+    // Add more mappings as needed
+  };
+
   if (error) return <div>Error: {error}</div>;
   if (!restaurants || restaurants.length === 0) return <div>Loading...</div>;
   return (
@@ -60,6 +77,10 @@ const RestaurantList = () => {
             {/*
             <img src={restaurant.photo} alt={restaurant.name} />
       */}
+            <img
+              src={imageMap[restaurant.selectedImage]}
+              alt={restaurant.name}
+            />
             <h3>Name : {restaurant.name}</h3>
             <p>Location : {restaurant.location}</p>
             <p>Rating : {restaurant.rating}</p>
@@ -68,6 +89,7 @@ const RestaurantList = () => {
             <p>Close Hr : {restaurant.closing}</p>
             <p>Phone : {restaurant.phone}</p>
             <p>Description : {restaurant.description}</p>
+
             {/* Link to the restaurant detail page */}
             <Link to={`../BookingPage/${restaurant._id}`} style={styles.link}>
               Book Now

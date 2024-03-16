@@ -1,4 +1,5 @@
-// import { useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+
 import logo from "../../assets/images/logo.png";
 import { NavLink, Link } from "react-router-dom";
 import { BiMenu } from "react-icons/bi";
@@ -18,9 +19,38 @@ const NavLinks = [
     display: "Signup",
   },
 ];
+const getCookieValue = (name) => {
+  const matches = document.cookie.match(
+    "(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"
+  );
+  return matches ? decodeURIComponent(matches[2]) : null;
+};
+
+const fetchUserType = async (userID) => {
+  try {
+    const response = await fetch(`http://localhost:5500/Diner/${userID}`);
+    if (!response.ok) throw new Error("Network response was not OK");
+    const data = await response.json();
+    return data.type; // Assuming the API returns a JSON object with a 'type' field
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    return null; // Handle error appropriately or return null
+  }
+};
 
 const Header = () => {
   const navigate = useNavigate();
+
+  const [userType, setUserType] = useState("");
+
+  useEffect(() => {
+    const userID = getCookieValue("userId"); // Use the correct cookie name here
+    if (userID) {
+      fetchUserType(userID).then((type) => {
+        setUserType(type);
+      });
+    }
+  }, []);
 
   const logout = () => {
     authLogout(navigate);
@@ -82,7 +112,21 @@ const Header = () => {
           >
             Logout
           </button>
+          <div className="container flex items-center justify-between w-full">
+            {/* Other header content */}
 
+            {/* Additional button for Admin */}
+            {userType === "Admin" && (
+              <button
+                onClick={() => navigate("/Admin")}
+                className="admin-button-styles"
+              >
+                Admin Page
+              </button>
+            )}
+
+            {/* More elements like logout button, etc. */}
+          </div>
           <span className="md:hidden">
             <BiMenu className="w-6 h-6 cursor-pointer" />
           </span>

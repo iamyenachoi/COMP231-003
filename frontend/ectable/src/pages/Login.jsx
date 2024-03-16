@@ -15,7 +15,7 @@ const Login = () => {
       url = `/BookingPage/${restaurantId}`; // Redirect to Booking Page with restaurantId
       console.log(url);
     } else {
-      url = "/Admin"; // Or redirect to another default page
+      url = "/"; // Or redirect to another default page
       console.log(url);
     }
     await authLogin(email, password, url);
