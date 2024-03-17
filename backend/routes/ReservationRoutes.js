@@ -35,6 +35,7 @@ ReservationRoutes.route("/Reservation/register").post(async (req, res) => {
     time: req.body.time,
     people: req.body.people,
     menuSelection: req.body.menuSelection,
+    userId: req.body.userId,
   };
 
   const check = await db_connect

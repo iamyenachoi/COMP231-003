@@ -2,27 +2,34 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authLogin } from "../components/Auth/auth";
 import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const par = useParams();
+  const { restaurantId } = par;
   var url = "";
+
   async function handleSubmit(event) {
+    console.log({ restaurantId });
     event.preventDefault();
-    if (from === "BookingPage/" && restaurantId) {
+    console.log(from);
+    if (from === "RestaurantList") {
       url = `/BookingPage/${restaurantId}`; // Redirect to Booking Page with restaurantId
       console.log(url);
     } else {
       url = "/"; // Or redirect to another default page
       console.log(url);
     }
-    await authLogin(email, password, url);
+    await authLogin(email, password, `/BookingPage/${restaurantId}`);
   }
-  const { from, restaurantId } = location.state || {
-    from: null,
-    restaurantId: null,
+
+  const { from, restaurantId2 } = location.state || {
+    from: "/", // Set a default 'from' value
+    restaurantId: null, // Assuming it's okay to be null if not provided
   };
 
   return (
