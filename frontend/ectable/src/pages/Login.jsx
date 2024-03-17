@@ -24,13 +24,10 @@ const Login = () => {
       url = "/"; // Or redirect to another default page
       console.log(url);
     }
-    await authLogin(email, password, `/BookingPage/${restaurantId}`);
+    await authLogin(email, password, url);
   }
 
-  const { from, restaurantId2 } = location.state || {
-    from: "/", // Set a default 'from' value
-    restaurantId: null, // Assuming it's okay to be null if not provided
-  };
+  const { from } = location.state || { from: { pathname: "/" } };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
