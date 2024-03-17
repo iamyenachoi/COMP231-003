@@ -11,7 +11,7 @@ const Login = () => {
   const location = useLocation();
   const par = useParams();
   const { restaurantId } = par;
-  var url = "";
+  var url = "/";
 
   async function handleSubmit(event) {
     console.log({ restaurantId });

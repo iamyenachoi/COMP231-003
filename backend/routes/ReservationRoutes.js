@@ -148,4 +148,41 @@ ReservationRoutes.route("/Reservation/:id/delete").delete(
   }
 );
 
+// This section will help you find the booking
+
+ReservationRoutes.route("/Reservation/find").get(
+  authToken,
+  async (req, res) => {
+    const db_connect = dbo.getDb();
+    const userId = req.body.userId;
+    const id = req.body.id;
+
+    if (!userId || !restaurantId) {
+      return res
+        .status(400)
+        .json({ message: "Missing userId or restaurantId" });
+    }
+
+    try {
+      const reservation = await db_connect.collection("Reservation").findOne({
+        userId: userId,
+        id: id,
+      });
+
+      if (reservation) {
+        // Returning the relevant reservation details
+        const { date, time, people, menuSelection } = reservation;
+        res.json({ date, time, people, menuSelection });
+      } else {
+        res.status(404).json({ message: "Reservation not found" });
+      }
+    } catch (error) {
+      console.error("Error fetching reservation details:", error);
+      res.status(500).json({
+        message: "An error occurred while fetching reservation details.",
+      });
+    }
+  }
+);
+
 module.exports = ReservationRoutes;

@@ -84,3 +84,13 @@ content-type: application/json
   "People": "5",
   "MenuSelection": "Salmon"
 }
+
+
+### find booking for user
+get http://localhost:5500/Reservation/find
+content-type: application/json
+
+{
+  "id": "65cbdda1e140698bfe3702a1",
+  "userId": "65eb6079b82acdbc4694972f"
+}

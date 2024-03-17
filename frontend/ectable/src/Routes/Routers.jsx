@@ -20,7 +20,6 @@ const Routers = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/Services" element={<Services />} />
       <Route path="/Contact" element={<Contact />} />
-      <Route path="/RestaurantList" element={<RestaurantList />} />
       <Route path="/BookingPage" element={<BookingPage />} />
 
       <Route element={<ProtectedRoute />}>
@@ -28,6 +27,7 @@ const Routers = () => {
         <Route path="/RestManagement" element={<RestManagement />} />
         <Route path="/RestaurantSignup" element={<RestaurantSignup />} />
         <Route path="/BookingPage/:restaurantId" element={<BookingPage />} />
+        <Route path="/RestaurantList" element={<RestaurantList />} />
       </Route>
     </Routes>
   );
