@@ -5,6 +5,7 @@ import { NavLink, Link } from "react-router-dom";
 import { BiMenu } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { authLogout } from "../Auth/auth";
+
 const NavLinks = [
   {
     path: "/home",
@@ -53,11 +54,12 @@ const Header = () => {
       });
     } else {
       setIsLoggedIn(false);
+      setUserType("");
     }
   }, []);
 
   const logout = () => {
-    setUserType("Diner");
+    setUserType("");
     setIsLoggedIn(false); // Update isLoggedIn state on logout
     authLogout();
     console.log("Logged out!");
@@ -134,6 +136,15 @@ const Header = () => {
                 className="bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center-justify-center rounded-[50px]"
               >
                 Admin Page
+              </button>
+            )}
+            {/* Additional button for Diner */}
+            {userType === "Diner" && (
+              <button
+                onClick={() => navigate("/BookingManagement")}
+                className="bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center-justify-center rounded-[50px]"
+              >
+                Booking Management
               </button>
             )}
 

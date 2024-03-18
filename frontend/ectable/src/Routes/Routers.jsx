@@ -9,6 +9,7 @@ import RestaurantSignup from "../pages/Admin/RestaurantSignup";
 import RestaurantList from "../pages/Restaurants/RestaurantList";
 import ProtectedRoute from "../components/ProtectedRoutes";
 import BookingPage from "../pages/BookingPage";
+import BookingManagement from "../pages/Restaurants/BookingManagement";
 
 import { Routes, Route } from "react-router-dom";
 const Routers = () => {
@@ -28,6 +29,7 @@ const Routers = () => {
         <Route path="/RestaurantSignup" element={<RestaurantSignup />} />
         <Route path="/BookingPage/:restaurantId" element={<BookingPage />} />
         <Route path="/RestaurantList" element={<RestaurantList />} />
+        <Route path="/BookingManagement" element={<BookingManagement />} />
       </Route>
     </Routes>
   );

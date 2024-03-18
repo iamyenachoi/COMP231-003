@@ -61,7 +61,7 @@ restaurantRoutes.route("/Restaurants/register").post(async (req, res) => {
 });
 
 // This section will help you get a single record by id
-restaurantRoutes.route("/Restaurants/:id").get(authToken, async (req, res) => {
+restaurantRoutes.route("/Restaurants/:id").get(async (req, res) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: new ObjectId(req.params.id) };
   const data = await db_connect.collection("Restaurants").findOne(myquery);
