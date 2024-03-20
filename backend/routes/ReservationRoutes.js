@@ -35,6 +35,7 @@ ReservationRoutes.route("/Reservation/register").post(async (req, res) => {
     time: req.body.time,
     people: req.body.people,
     menuSelection: req.body.menuSelection,
+    userId: req.body.userId,
   };
 
   const check = await db_connect
@@ -146,5 +147,68 @@ ReservationRoutes.route("/Reservation/:id/delete").delete(
       });
   }
 );
+
+// This section will help you find the booking
+
+ReservationRoutes.route("/Reservation/find").get(
+  authToken,
+  async (req, res) => {
+    const db_connect = dbo.getDb();
+    const userId = req.body.userId;
+    const id = req.body.id;
+
+    if (!userId || !id) {
+      return res
+        .status(400)
+        .json({ message: "Missing userId or restaurantId" });
+    }
+
+    try {
+      const reservation = await db_connect.collection("Reservation").findOne({
+        userId: userId,
+        id: id,
+      });
+
+      if (reservation) {
+        // Returning the relevant reservation details
+        const { date, time, people, menuSelection } = reservation;
+        res.json({ date, time, people, menuSelection });
+      } else {
+        res.status(404).json({ message: "Reservation not found" });
+      }
+    } catch (error) {
+      console.error("Error fetching reservation details:", error);
+      res.status(500).json({
+        message: "An error occurred while fetching reservation details.",
+      });
+    }
+  }
+);
+
+ReservationRoutes.route("/Reservation/User/:userId").get(async (req, res) => {
+  const db_connect = dbo.getDb("Reservation"); // Make sure to specify your database name if needed
+  const userId = req.params.userId; // Assuming userId is a string
+
+  // Query based on the userId field
+  const query = { userId: userId };
+
+  try {
+    const data = await db_connect
+      .collection("Reservation")
+      .find(query)
+      .toArray(); // Using .find() to get all matches
+
+    if (data && data.length > 0) {
+      console.log(data);
+      res.json(data); // Respond with an array of reservations
+    } else {
+      console.log("No data found for this user");
+      res.status(404).json({ message: "No reservations found for this user." });
+    }
+  } catch (error) {
+    console.error("Error accessing the database:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 module.exports = ReservationRoutes;

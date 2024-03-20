@@ -16,6 +16,12 @@ import {
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { create } from "./api-user";
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -54,6 +60,7 @@ export default function Signup() {
     password: "",
     email: "",
     phone: "",
+    type: "Diner", // Default value
   });
 
   const [open, setOpen] = useState(false);
@@ -72,6 +79,7 @@ export default function Signup() {
       email: values.email || undefined,
       password: values.password || undefined,
       phone: values.phone || undefined,
+      type: values.type || "Diner",
     };
 
     create(user).then((data) => {
@@ -86,6 +94,10 @@ export default function Signup() {
   Signup.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
+  };
+
+  const handleRoleChange = (event) => {
+    setValues({ ...values, type: event.target.value });
   };
 
   return (
@@ -129,6 +141,26 @@ export default function Signup() {
             type="password"
             margin="normal"
           />
+          <FormControl component="fieldset">
+            <RadioGroup
+              row
+              aria-label="role"
+              name="role"
+              value={values.type}
+              onChange={handleRoleChange}
+            >
+              <FormControlLabel
+                value="Diner"
+                control={<Radio color="primary" />}
+                label="Diner"
+              />
+              <FormControlLabel
+                value="Admin"
+                control={<Radio color="primary" />}
+                label="Restaurant Admin"
+              />
+            </RadioGroup>
+          </FormControl>
         </CardContent>
         <CardActions>
           <Button
@@ -143,11 +175,18 @@ export default function Signup() {
       </Card>
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Restaurant</DialogTitle>
+        <DialogTitle>New Registration</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            New Restaurant successfully created.
-          </DialogContentText>
+          {values.type === "Diner" ? (
+            <DialogContentText>
+              Congratulations on successfully creating your diner account!
+            </DialogContentText>
+          ) : (
+            <DialogContentText>
+              Your restaurant admin account has been created successfully.
+              Welcome to our community!
+            </DialogContentText>
+          )}
         </DialogContent>
         <DialogActions>
           <Link to="/Login">
@@ -157,7 +196,7 @@ export default function Signup() {
               variant="contained"
               onClick={handleClose}
             >
-              Login In
+              Login
             </Button>
           </Link>
         </DialogActions>

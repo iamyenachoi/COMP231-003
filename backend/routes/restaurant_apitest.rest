@@ -22,7 +22,7 @@ content-type: application/json
 }
 
 ### get restaurant by id
-Get http://localhost:5500/Restaurants/:id
+Get http://localhost:5500/Restaurants/65cbdda1e140698bfe3702a1
 ###
 
 ### update restaurant information
@@ -38,8 +38,26 @@ GET  http://localhost:5500/Diner
 
 ###
 
+### Get Diner by ID
+GET  http://localhost:5500/Diner/65d38fc4eb637c510ec07e75
+###
+
+### Get User by ID2
+GET  http://localhost:5500/User/65eb6079b82acdbc4694972f
+###
+
+
 ### Diner Login
 Post http://localhost:5500/diner/login
+content-type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "password"
+}
+
+### User Login
+Post http://localhost:5500/User/login
 content-type: application/json
 
 {
@@ -64,6 +82,7 @@ content-type: application/json
   "Menu4": ""
 }
 
+
 ### register restaurant2
 Post http://localhost:5500/Reservation/register
 content-type: application/json
@@ -75,3 +94,20 @@ content-type: application/json
   "People": "5",
   "MenuSelection": "Salmon"
 }
+
+
+### find reservatrion for user
+get http://localhost:5500/Reservation/find
+content-type: application/json
+
+{
+  "id": "65cbdda1e140698bfe3702a1",
+  "userId": "65eb6079b82acdbc4694972f"
+}
+
+### find all reservatrion
+get http://localhost:5500/Reservation
+
+
+### find reservatrion by user ID
+get http://localhost:5500/Reservation/65eb6079b82acdbc4694972f

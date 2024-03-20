@@ -23,6 +23,7 @@ UserRoutes.route("/User/register").post(async (req, res) => {
     password: req.body.password,
     name: req.body.name,
     phone: req.body.phone,
+    type: req.body.type,
   };
 
   const check = await db_connect

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
@@ -16,6 +16,20 @@ import {
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { create } from "./api-Restaurant";
+import { useParams } from "react-router-dom";
+import image1 from "../../assets/images/image1.jpg";
+import image2 from "../../assets/images/image2.jpg";
+import image3 from "../../assets/images/image3.jpg";
+import image4 from "../../assets/images/image4.jpg";
+import image5 from "../../assets/images/image5.jpg";
+import image6 from "../../assets/images/image6.jpg";
+
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+  return null; // Return null if cookie is not found
+};
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -40,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 18,
   },
+  selectedImageClass: {
+    border: "5px solid #ff51b5", // Example border color, adjust as needed
+    borderRadius: theme.shape.borderRadius, // Optional, for rounded corners
+  },
 }));
 
 // const create = async (user) => {
@@ -47,12 +65,13 @@ const useStyles = makeStyles((theme) => ({
 // };
 
 export default function RestaurantSignup() {
+  const { default_admin_email } = useParams();
+
   const classes = useStyles();
 
   const [values, setValues] = useState({
     name: "",
     location: "",
-    photo: "",
     rating: "",
     cuisine: "",
     price: "",
@@ -61,12 +80,44 @@ export default function RestaurantSignup() {
     opening: "",
     phone: "",
     email: "",
+    adminEmail: "",
+    readonlyEmail: "",
+    selectedImage: "",
   });
+
+  useEffect(() => {
+    const userID = getCookie("userId");
+    if (userID) {
+      fetch(`http://localhost:5500/User/${userID}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.email) {
+            setValues((prevValues) => ({
+              ...prevValues,
+              adminEmail: data.email,
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+  }, []);
 
   const [open, setOpen] = useState(false);
 
   const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+    if (name === "photo" && event.target.files) {
+      // Store the file object in the state
+      setValues({ ...values, [name]: event.target.files[0] });
+    } else {
+      setValues({ ...values, [name]: event.target.value });
+    }
   };
 
   const handleClose = () => {
@@ -86,6 +137,9 @@ export default function RestaurantSignup() {
       closing: values.closing || undefined,
       opening: values.opening || undefined,
       phone: values.phone || undefined,
+      adminEmail: values.adminEmail || undefined,
+      readonlyEmail: values.readonlyEmail || undefined,
+      selectedImage: values.selectedImage || undefined,
     };
 
     create(restaurant).then((data) => {
@@ -95,6 +149,10 @@ export default function RestaurantSignup() {
         setOpen(true);
       }
     });
+  };
+
+  const handleImageSelection = (imageName) => {
+    setValues({ ...values, selectedImage: imageName });
   };
 
   RestaurantSignup.propTypes = {
@@ -196,6 +254,53 @@ export default function RestaurantSignup() {
             type="phone"
             margin="normal"
           />
+          <TextField
+            id="adminEmail"
+            label="Admin Account Email"
+            className={classes.textField}
+            value={values.adminEmail}
+            onChange={handleChange("adminEmail")}
+            disabled
+            margin="normal"
+            defaultValue={default_admin_email}
+          />
+          <TextField
+            id="readonlyEmail"
+            label="Read Only Account Email"
+            className={classes.textField}
+            value={values.readonlyEmail}
+            onChange={handleChange("readonlyEmail")}
+            margin="normal"
+          />
+          <div>
+            <Typography variant="h6" className={classes.title}>
+              Choose an Image for Your Restaurant
+            </Typography>
+            <div>
+              {[image1, image2, image3, image4, image5, image6].map(
+                (image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`Restaurant Image ${index + 1}`}
+                    style={{
+                      width: "200px",
+                      margin: "10px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      handleImageSelection(`image${index + 1}.jpg`)
+                    }
+                    className={
+                      values.selectedImage === `image${index + 1}.jpg`
+                        ? classes.selectedImageClass
+                        : ""
+                    }
+                  />
+                )
+              )}
+            </div>
+          </div>
         </CardContent>
         <CardActions>
           <Button

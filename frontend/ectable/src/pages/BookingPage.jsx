@@ -16,6 +16,7 @@ import {
 import { useParams } from "react-router-dom";
 
 import { create } from "./api-Reservation";
+import Cookies from "js-cookie";
 
 const BookingPage = () => {
   const { restaurantId } = useParams();
@@ -41,6 +42,7 @@ const BookingPage = () => {
       time: bookingDetails.time || undefined,
       people: bookingDetails.people || undefined,
       menuSelection: bookingDetails.menuSelection || undefined,
+      userId: Cookies.get("userId") || undefined,
     };
 
     create(Reservation).then((data) => {

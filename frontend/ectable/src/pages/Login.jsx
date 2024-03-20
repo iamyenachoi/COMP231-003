@@ -2,28 +2,32 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authLogin } from "../components/Auth/auth";
 import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  var url = "";
+  const par = useParams();
+  const { restaurantId } = par;
+  var url = "/";
+
   async function handleSubmit(event) {
+    console.log({ restaurantId });
     event.preventDefault();
-    if (from === "BookingPage/" && restaurantId) {
+    console.log(from);
+    if (from === "RestaurantList") {
       url = `/BookingPage/${restaurantId}`; // Redirect to Booking Page with restaurantId
       console.log(url);
     } else {
-      url = "/Admin"; // Or redirect to another default page
+      url = "/"; // Or redirect to another default page
       console.log(url);
     }
     await authLogin(email, password, url);
   }
-  const { from, restaurantId } = location.state || {
-    from: null,
-    restaurantId: null,
-  };
+
+  const { from } = location.state || { from: { pathname: "/" } };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
