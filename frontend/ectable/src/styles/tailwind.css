@@ -578,10 +578,6 @@ video {
   }
 }
 
-.collapse {
-  visibility: collapse;
-}
-
 .relative {
   position: relative;
 }
@@ -701,10 +697,6 @@ video {
 
 .shrink {
   flex-shrink: 1;
-}
-
-.border-collapse {
-  border-collapse: collapse;
 }
 
 .transform {
