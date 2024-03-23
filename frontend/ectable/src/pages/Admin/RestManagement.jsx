@@ -80,41 +80,45 @@ const RestManagement = () => {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Restaurant Name</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Time</TableCell>
-              <TableCell>People</TableCell>
-              <TableCell>Selected Menu</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {bookings.map((booking) => (
-              <TableRow key={booking._id}>
-                <TableCell>{booking.restaurantName}</TableCell>
-                <TableCell>{booking.date}</TableCell>
-                <TableCell>{booking.time}</TableCell>
-                <TableCell>{booking.people}</TableCell>
-                <TableCell>
-                  {booking.menuSelection && booking.menuSelection.length > 0
-                    ? booking.menuSelection.join(", ")
-                    : "No menu selected"}
-                </TableCell>{" "}
-                <TableCell>
-                  <Button onClick={() => handleEdit(booking)}>Edit</Button>
-                  <Button onClick={() => handleDelete(booking._id)}>
-                    Delete
-                  </Button>
-                </TableCell>
+      {bookings.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Restaurant Name</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Time</TableCell>
+                <TableCell>People</TableCell>
+                <TableCell>Selected Menu</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {bookings.map((booking) => (
+                <TableRow key={booking._id}>
+                  <TableCell>{booking.restaurantName}</TableCell>
+                  <TableCell>{booking.date}</TableCell>
+                  <TableCell>{booking.time}</TableCell>
+                  <TableCell>{booking.people}</TableCell>
+                  <TableCell>
+                    {booking.menuSelection && booking.menuSelection.length > 0
+                      ? booking.menuSelection.join(", ")
+                      : "No menu selected"}
+                  </TableCell>
+                  <TableCell>
+                    <Button onClick={() => handleEdit(booking)}>Edit</Button>
+                    <Button onClick={() => handleDelete(booking._id)}>
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <p>No bookings available</p>
+      )}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Booking</DialogTitle>
         <DialogContent>
@@ -143,5 +147,4 @@ const RestManagement = () => {
     </>
   );
 };
-
 export default RestManagement;
