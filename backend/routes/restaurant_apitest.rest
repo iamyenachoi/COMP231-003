@@ -25,6 +25,11 @@ content-type: application/json
 Get http://localhost:5500/Restaurants/65cbdda1e140698bfe3702a1
 ###
 
+### get all reservation by adminId
+Get http://localhost:5500/Reservation/Admin/65fe5880159eaafa26378e88
+###
+
+
 ### update restaurant information
 POST http://localhost:5500/Restaurants/:id/update
 ###

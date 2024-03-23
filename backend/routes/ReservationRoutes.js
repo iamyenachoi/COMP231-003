@@ -211,4 +211,52 @@ ReservationRoutes.route("/Reservation/User/:userId").get(async (req, res) => {
   }
 });
 
+ReservationRoutes.route("/Reservation/Admin/:adminId").get(async (req, res) => {
+  const db_connect = dbo.getDb("Restaurant");
+  const adminId = req.params.adminId;
+
+  // Validate adminId as a valid ObjectId
+  if (!ObjectId.isValid(adminId)) {
+    return res.status(400).json({ message: "Invalid adminId." });
+  }
+
+  try {
+    // Step 1: Find all restaurant documents based on adminId
+    const restaurants = await db_connect
+      .collection("Restaurants")
+      .find({ adminId: adminId })
+      .toArray();
+
+    if (restaurants.length === 0) {
+      console.log("No restaurants found for this adminId");
+      return res
+        .status(404)
+        .json({ message: "No restaurants found for this adminId." });
+    }
+
+    const restaurantIds = restaurants.map((restaurant) =>
+      restaurant._id.toString()
+    );
+    console.log(restaurantIds);
+    // Step 2: Find reservations associated with each restaurant's _id
+    const reservations = await db_connect
+      .collection("Reservation")
+      .find({ restaurantId: { $in: restaurantIds } })
+      .toArray();
+
+    if (reservations.length > 0) {
+      console.log("Reservations found:", reservations);
+      res.json(reservations); // Respond with an array of reservations
+    } else {
+      console.log("No reservations found for these restaurants");
+      res
+        .status(404)
+        .json({ message: "No reservations found for these restaurants." });
+    }
+  } catch (error) {
+    console.error("Error accessing the database:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 module.exports = ReservationRoutes;

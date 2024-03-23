@@ -42,6 +42,7 @@ restaurantRoutes.route("/Restaurants/register").post(async (req, res) => {
     adminEmail: req.body.adminEmail,
     readonlyEmail: req.body.readonlyEmail,
     selectedImage: req.body.selectedImage,
+    adminId: req.body.adminId,
   };
 
   const check = await db_connect

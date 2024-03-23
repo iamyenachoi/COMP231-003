@@ -124,6 +124,8 @@ export default function RestaurantSignup() {
     setOpen(false);
   };
 
+  const adminId = getCookie("userId");
+
   const clickSubmit = () => {
     const restaurant = {
       email: values.email || undefined,
@@ -138,6 +140,7 @@ export default function RestaurantSignup() {
       opening: values.opening || undefined,
       phone: values.phone || undefined,
       adminEmail: values.adminEmail || undefined,
+      adminId: adminId || undefined,
       readonlyEmail: values.readonlyEmail || undefined,
       selectedImage: values.selectedImage || undefined,
     };
