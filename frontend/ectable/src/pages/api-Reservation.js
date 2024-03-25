@@ -10,10 +10,22 @@ const create = async (Reservation) => {
       },
       body: JSON.stringify(Reservation),
     });
-    return await response.json();
+
+    console.log(`response :  ${response}`);
+    console.log(response)
+    if (response.ok) {
+      // Parse the JSON response if the request was successful
+      const data = await response.json();
+      return { success: true, data };
+    } else {
+      // If the server responded with an error status, parse the JSON error message
+      const error = await response.json();
+      return { success: false, error: error.message || "An unknown error occurred" };
+    }
   } catch (err) {
+    // Log and return the error if the request failed to send
     console.log(err);
-    
+    return { success: false, error: err.message || "An error occurred while making the request" };
   }
 };
 const list = async (signal) => {

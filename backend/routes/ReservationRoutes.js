@@ -87,8 +87,6 @@ ReservationRoutes.route("/Reservation/register").post(async (req, res) => {
               }
             ]).toArray();
 
-            console.log(totalBooked)
-
             console.log(bookingAggregation)
 
             
@@ -104,23 +102,19 @@ ReservationRoutes.route("/Reservation/register").post(async (req, res) => {
             console.log(`remainingAvailability : ${remainingAvailability}`);
 
             if (remainingAvailability >= peopleRequesting){
-              await db_connect.collection("Reservation").insertOne(Reservation).then((result) => 
-              {
-                console.log(result);
-                res.json(result);})
-              .catch((err) => {
-                console.error(err);
-                res.status(500).json({ success: false, message: "An error occurred during booking", error: err });
-              })
-            }
+                const response = await db_connect.collection("Reservation").insertOne(Reservation);
+                console.log(response);
+                res.json({ success: true, message: "Reservation successful.", data: response });
+              }
+            
             else{
               console.log("Insufficient availability for the requested booking")
-              res.status(400).json({ success: false, message:"Insufficient availability for the requested booking"});
+              res.status(500).json({ success: false, message: "An error occurred during booking", error: err.message });
             }
                     
       }catch(err){
-      console.error("Error processing reservation:", err);
-      res.status(500).json({ error: "An error occurred processing the reservation" })}
+        console.error("Error processing reservation:", err);
+        res.status(400).json({ success: false, message:"Insufficient availability for the requested booking"});}
 
     //     if(check){
     //       console.log("Availability : " + check.availability)

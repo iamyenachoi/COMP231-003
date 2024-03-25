@@ -65,13 +65,14 @@ const handleSubmit = async (e) => {
     console.log(Reservation)
 
     create(Reservation).then((data) => {
-      if (!data.success) {
+      console.log(data.success);
+      if (data.success) {
+        setOpenDialog(true);
+        setFullDialog(false)
+      } else {
         setBookingDetails({ ...bookingDetails, error: data.error });
         setOpenDialog(false);
         setFullDialog(true);
-      } else {
-        setOpenDialog(true);
-        setFullDialog(false)
       }
     }); // Add logic here to send booking details to your backend
   };
@@ -169,6 +170,9 @@ const handleSubmit = async (e) => {
       </form>
       <Dialog open={openDialog} onClose={handleClose}>
         <DialogTitle>Booking Successful</DialogTitle>
+        <DialogContent>
+            You have reserved a table on {bookingDetails.date} at {bookingDetails.time} successfully. 
+          </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             OK
@@ -179,10 +183,10 @@ const handleSubmit = async (e) => {
       <Dialog open={FullDialog} onClose={handleFullClose}>
         <DialogTitle>Booking Failed</DialogTitle>
         <DialogContent>
-          Insufficient availability for your selected date and time.
+          Insufficient availability for your selected date and time in below.
           </DialogContent>
           <DialogContent>
-            ({bookingDetails.date} at {bookingDetails.time})
+            {bookingDetails.date} at {bookingDetails.time}
           </DialogContent>
           <DialogContent>
           Please choose a different date or time slot for your booking.
