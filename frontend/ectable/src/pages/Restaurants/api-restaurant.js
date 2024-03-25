@@ -1,3 +1,5 @@
+
+
 const create = async (Restaurant) => {
   try {
     console.log(JSON.stringify(Restaurant));
@@ -18,8 +20,8 @@ const list = async (signal) => {
   try {
     let response = await fetch("http://localhost:5500/restaurants/", {
       method: "GET",
-
       signal: signal,
+      credentials: 'include'
     });
     return await response.json();
   } catch (err) {
@@ -28,8 +30,10 @@ const list = async (signal) => {
 };
 const read = async (params, credentials, signal) => {
   try {
+    console.log(credentials.t);
+    console.log(params._id);
     let response = await fetch(
-      "http://localhost:5500/restaurants/" + params._id,
+      `http://localhost:5500/restaurants/${params._id}`,
       {
         method: "GET",
         signal: signal,

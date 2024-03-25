@@ -13,6 +13,7 @@ const create = async (Reservation) => {
     return await response.json();
   } catch (err) {
     console.log(err);
+    
   }
 };
 const list = async (signal) => {

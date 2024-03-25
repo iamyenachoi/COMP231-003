@@ -13,6 +13,9 @@ const ObjectId = require("mongodb").ObjectId;
 
 const authToken = require("../Auth/token");
 
+const{updateRestaurantAvailability} = require('../Controller/restaurantController')
+
+
 // This section will help you get a list of all the records.
 // get all restaurants
 ReservationRoutes.route("/Reservation").get(async function (req, response) {
@@ -40,22 +43,115 @@ ReservationRoutes.route("/Reservation/register").post(async (req, res) => {
     dinerId: req.body.dinerId,
   };
 
-  const check = await db_connect
-    .collection("Reservation")
-    .findOne({ restaurantId: Reservation.restaurantId, dinerId : Reservation.dinerId, date: Reservation.date, time: Reservation.time });
+  const peopleRequesting = parseInt(req.body.people);
 
-  console.log(Reservation);
+  // const check = await db_connect
+  //   .collection("Reservation")
+  //   .findOne({ restaurantId: Reservation.restaurantId, dinerId : Reservation.dinerId, date: Reservation.date, time: Reservation.time });
 
-  if (!check) {
-    db_connect
-      .collection("Reservation")
-      .insertOne(Reservation)
-      .then((result) => {
-        console.log(result);
-        res.json(result);
-      })
-      .catch((err) => console.error(err));
-  }
+  //   .insertOne(Reservation);
+    try{
+
+          const query = {_id : new ObjectId(req.body.restaurantId)};
+            const check = await db_connect.collection("Restaurants").findOne(query, {projection: { "availability": 1, "_id": 0 } });
+            // const bookingquery = { restaurantId : new ObjectId(req.body.restaurantId), date : req.body.date, time: req.body.time }
+            // const booking = await db_connect.collection("Reservation").find(bookingquery);
+            // console.log(booking);
+
+            const totalAvailability = check.availability;
+
+            console.log(req.body.date)
+            console.log(req.body.time)
+            console.log(req.body.people)
+            let totalBooked = 0;
+
+            console.log({
+              restaurantId: req.body.restaurantId,
+              date: req.body.date,
+              time: req.body.time
+            });
+
+            const bookingAggregation = await db_connect.collection("Reservation").aggregate([
+              {
+                $match: {
+                  restaurantId: req.body.restaurantId, // Ensure this matches your schema's data type
+                  date: req.body.date,
+                  time: req.body.time
+                }
+              },
+              {
+                $group: {
+                  _id: null,
+                  totalBooked: { $sum: { $toInt: "$people" } }
+                }
+              }
+            ]).toArray();
+
+            console.log(totalBooked)
+
+            console.log(bookingAggregation)
+
+            
+            if (bookingAggregation.length > 0) {
+              totalBooked = bookingAggregation[0].totalBooked;
+            }
+
+            console.log(`totalAvailability : ${totalAvailability}`)
+            console.log(`totalBooked : ${totalBooked}`);
+            
+            console.log(`peopleRequesting : ${peopleRequesting}`);
+            const remainingAvailability = totalAvailability - totalBooked;
+            console.log(`remainingAvailability : ${remainingAvailability}`);
+
+            if (remainingAvailability >= peopleRequesting){
+              await db_connect.collection("Reservation").insertOne(Reservation).then((result) => 
+              {
+                console.log(result);
+                res.json(result);})
+              .catch((err) => {
+                console.error(err);
+                res.status(500).json({ success: false, message: "An error occurred during booking", error: err });
+              })
+            }
+            else{
+              console.log("Insufficient availability for the requested booking")
+              res.status(400).json({ success: false, message:"Insufficient availability for the requested booking"});
+            }
+                    
+      }catch(err){
+      console.error("Error processing reservation:", err);
+      res.status(500).json({ error: "An error occurred processing the reservation" })}
+
+    //     if(check){
+    //       console.log("Availability : " + check.availability)
+    //         if (Reservation.people <= check.availability) {
+    //             await db_connect.collection("Reservation").insertOne(Reservation).then((result) => {
+    //             console.log(result);
+    //             res.json(result);})
+    //            .catch((err) => console.error(err))}
+    //             await updateRestaurantAvailability(req.body.restaurantId, Reservation.people);
+    //             res.json({ message: "Reservation successful and availability updated" });
+    //         }else{ console.log("availiablity not found.")}
+    //         console.log(Reservation);
+
+    //   }catch(err){
+    //   console.error("Error processing reservation:", err);
+    //   res.status(500).json({ error: "An error occurred processing the reservation" });
+    // }
+
+
+   
+      
+  // if (!check) {
+  //   db_connect
+  //     .collection("Reservation")
+  //     .insertOne(Reservation)
+  //     .then((result) => {
+  //       console.log(result);
+  //       res.json(result);
+  //     })
+  //     .catch((err) => console.error(err));
+  // }
 });
 
 // This section will help you get a single record by id

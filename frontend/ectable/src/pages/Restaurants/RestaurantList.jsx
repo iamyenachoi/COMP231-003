@@ -1,8 +1,10 @@
 // frontend/ectable/src/pages/RestaurantDetail.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 
 import image1 from "../../assets/images/image1.jpg";
 import image2 from "../../assets/images/image2.jpg";
@@ -13,6 +15,8 @@ import image6 from "../../assets/images/image6.jpg";
 
 // Assuming you have an API service to fetch restaurant details
 import { list } from "./api-restaurant";
+
+
 
 const styles = {
   container: {
@@ -41,6 +45,7 @@ const styles = {
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     list().then((data) => {
@@ -72,6 +77,7 @@ const RestaurantList = () => {
           style={styles.card}
           onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
           onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onClick={()=> navigate(`../BookingPage/${restaurant._id}`)}
         >
           <div style={styles.content}>
             {/*

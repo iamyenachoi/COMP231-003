@@ -3,9 +3,11 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5500;
+const cookieParser = require('cookie-parser');
 // app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -27,6 +29,7 @@ app.use(require("./routes/UserRoutes"));
 app.use(require("./routes/ReservationRoutes"));
 // app.use(require('./routes/Reservation'))
 app.use(require("./Auth/login"));
+
 // const { login } = require("./Auth/login");
 // app.use("/auth", login);
 // get driver connection

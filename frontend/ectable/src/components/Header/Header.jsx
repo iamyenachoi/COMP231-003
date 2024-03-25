@@ -63,7 +63,7 @@ const Header = () => {
     setIsLoggedIn(false); // Update isLoggedIn state on logout
     authLogout();
     console.log("Logged out!");
-    navigate("/"); // Navigate to home page or login page as per requirement after logout
+    navigate("/login"); // Navigate to home page or login page as per requirement after logout
   };
 
   return (
