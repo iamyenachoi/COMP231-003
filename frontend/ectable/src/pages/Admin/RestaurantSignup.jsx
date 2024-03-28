@@ -160,7 +160,7 @@ export default function RestaurantSignup() {
     if (values.registerReadOnly) {
       const readOnlyUser = {
         email: values.readonlyEmail || undefined,
-        password: values.readonlyEmailPassword || undefined,
+        password: values.readonlyPassword || undefined,
         type: "Readonly",
       };
 
