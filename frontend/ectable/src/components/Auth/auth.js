@@ -1,5 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+
+
 export const authLogin = async (email, password, url) => {
   try {
     const response = await axios.post("http://localhost:5500/diner/login", {
@@ -41,9 +43,9 @@ export const authLogin = async (email, password, url) => {
     console.log(e);
   }
 };
-export const authLogout = (navigate) => {
+export const authLogout = () => {
   Cookies.remove("accessToken", { path: "/" });
   Cookies.remove("refreshToken", { path: "/" });
   Cookies.remove("userId", { path: "/" });
-  navigate("/login");
+  
 };

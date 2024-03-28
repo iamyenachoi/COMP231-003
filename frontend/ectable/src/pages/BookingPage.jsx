@@ -12,6 +12,7 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
+  DialogContent,
 } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 
@@ -23,6 +24,7 @@ import Cookies from "js-cookie";
 const BookingPage = () => {
   const { restaurantId } = useParams();
   const [openDialog, setOpenDialog] = useState(false);
+  const [FullDialog, setFullDialog] = useState(false);
 
   const [bookingDetails, setBookingDetails] = useState({
     date: "",
@@ -43,6 +45,7 @@ const handleSubmit = async (e) => {
     const credentials = {
       t: Cookies.get("accessToken"), // Example: Retrieving an auth token from cookies
     };
+    console.log(credentials.t);
     console.log(restaurantId);
     const restaurantData = await read({_id : restaurantId}, credentials, signal);
     console.log(restaurantData.name);
@@ -62,11 +65,14 @@ const handleSubmit = async (e) => {
     console.log(Reservation)
 
     create(Reservation).then((data) => {
-      if (data.error) {
+      console.log(data.success);
+      if (data.success) {
+        setOpenDialog(true);
+        setFullDialog(false)
+      } else {
         setBookingDetails({ ...bookingDetails, error: data.error });
         setOpenDialog(false);
-      } else {
-        setOpenDialog(true);
+        setFullDialog(true);
       }
     }); // Add logic here to send booking details to your backend
   };
@@ -75,6 +81,10 @@ const handleSubmit = async (e) => {
     setOpenDialog(false);
     // Additional logic to redirect the user or reset the form
   };
+
+  const handleFullClose = () =>{
+    setFullDialog(false);
+  }
 
   const menuItems = [
     { name: "Steak", price: 20 },
@@ -160,8 +170,29 @@ const handleSubmit = async (e) => {
       </form>
       <Dialog open={openDialog} onClose={handleClose}>
         <DialogTitle>Booking Successful</DialogTitle>
+        <DialogContent>
+            You have reserved a table on {bookingDetails.date} at {bookingDetails.time} successfully. 
+          </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={FullDialog} onClose={handleFullClose}>
+        <DialogTitle>Booking Failed</DialogTitle>
+        <DialogContent>
+          Insufficient availability for your selected date and time in below.
+          </DialogContent>
+          <DialogContent>
+            {bookingDetails.date} at {bookingDetails.time}
+          </DialogContent>
+          <DialogContent>
+          Please choose a different date or time slot for your booking.
+          </DialogContent>
+        <DialogActions>
+          <Button onClick={handleFullClose} color="primary">
             OK
           </Button>
         </DialogActions>
