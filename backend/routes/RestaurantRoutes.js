@@ -13,7 +13,13 @@ const ObjectId = require("mongodb").ObjectId;
 
 const authToken = require("../Auth/token");
 
-const {getAllRestaurants, getRestaurantById, registerRestaurant, restaurantUpdateById, restaurantDeleteById}  = require('../Controller/restaurantController');
+const {
+  getAllRestaurants,
+  getRestaurantById,
+  registerRestaurant,
+  restaurantUpdateById,
+  restaurantDeleteById,
+} = require("../Controller/restaurantController");
 const { route } = require("./ReservationRoutes");
 
 // This section will help you get a list of all the records.
@@ -48,6 +54,7 @@ restaurantRoutes.route("/Restaurants/register").post(async (req, res) => {
     selectedImage: req.body.selectedImage,
     adminId: req.body.adminId,
     readonlyId: req.body.readonlyId,
+    availability: req.body.availability,
   };
 
   const check = await db_connect
@@ -174,10 +181,10 @@ restaurantRoutes.route("/Restaurants/:id").get(async (req, res) => {
 //       });
 //   });
 
-restaurantRoutes.get('/restaurants', getAllRestaurants);
-restaurantRoutes.get('/restaurants/:id', getRestaurantById);
-restaurantRoutes.post('/restaurants/register', registerRestaurant);
-restaurantRoutes.post('/restaurants/:id/update', restaurantUpdateById);
-restaurantRoutes.delete('/restaurants/:id/delete', restaurantDeleteById);
+restaurantRoutes.get("/restaurants", getAllRestaurants);
+restaurantRoutes.get("/restaurants/:id", getRestaurantById);
+restaurantRoutes.post("/restaurants/register", registerRestaurant);
+restaurantRoutes.post("/restaurants/:id/update", restaurantUpdateById);
+restaurantRoutes.delete("/restaurants/:id/delete", restaurantDeleteById);
 
 module.exports = restaurantRoutes;

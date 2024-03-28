@@ -88,6 +88,7 @@ export default function RestaurantSignup() {
     readonlyEmail: "",
     selectedImage: "",
     readonlyPassword: "",
+    availability: "",
     registerReadOnly: false, // New state value for checkbox
   });
 
@@ -155,6 +156,7 @@ export default function RestaurantSignup() {
       readonlyEmail: values.readonlyEmail || undefined,
       readonlyPassword: values.readonlyPassword || undefined,
       selectedImage: values.selectedImage || undefined,
+      availability: values.availability || undefined,
     };
 
     if (values.registerReadOnly) {
@@ -311,6 +313,16 @@ export default function RestaurantSignup() {
             onChange={handleChange("phone")}
             type="phone"
             margin="normal"
+          />
+          <TextField
+            id="availability"
+            label="Tables available"
+            className={classes.textField}
+            value={values.availability}
+            onChange={handleChange("availability")}
+            type="number"
+            margin="normal"
+            defaultValue={20}
           />
           <TextField
             id="adminEmail"
