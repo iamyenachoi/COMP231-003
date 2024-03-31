@@ -66,11 +66,15 @@ const handleSubmit = async (e) => {
 
     create(Reservation).then((data) => {
       console.log(data.success);
-      if (data.success) {
+      console.log(data);
+      console.log(data.data.remain);
+      console.log(data.data.total);
+      
+      if (data.data.success) {
         setOpenDialog(true);
         setFullDialog(false)
       } else {
-        setBookingDetails({ ...bookingDetails, error: data.error });
+        setBookingDetails({ ...bookingDetails, error: data.error, remain : data.data.remain });
         setOpenDialog(false);
         setFullDialog(true);
       }
@@ -185,11 +189,14 @@ const handleSubmit = async (e) => {
         <DialogContent>
           Insufficient availability for your selected date and time in below.
           </DialogContent>
-          <DialogContent>
+          {/* <DialogContent>
             {bookingDetails.date} at {bookingDetails.time}
+          </DialogContent> */}
+          <DialogContent>
+          Currently, only {bookingDetails.remain} are available for booking on {bookingDetails.date} at {bookingDetails.time}.
           </DialogContent>
           <DialogContent>
-          Please choose a different date or time slot for your booking.
+            Please select an alternative date or time slot for your reservation.
           </DialogContent>
         <DialogActions>
           <Button onClick={handleFullClose} color="primary">
