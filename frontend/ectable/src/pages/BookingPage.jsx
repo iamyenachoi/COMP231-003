@@ -18,6 +18,8 @@ import { useParams } from "react-router-dom";
 
 import { create } from "./api-Reservation";
 
+import emailConfirm from "./api-EmailConfirmation";
+
 import { read } from "./Restaurants/api-restaurant";
 import Cookies from "js-cookie";
 
@@ -32,6 +34,16 @@ const BookingPage = () => {
     people: "",
     menuSelection: [],
   });
+
+  // const [emailInfor, setEmailInfor] = useState({
+  //   date : "",
+  //   time : "", 
+  //   people : "",
+  //   restaurant : "",
+  //   userEmail : ""
+  // })
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,6 +61,8 @@ const handleSubmit = async (e) => {
     console.log(restaurantId);
     const restaurantData = await read({_id : restaurantId}, credentials, signal);
     console.log(restaurantData.name);
+    console.log(Cookies.get("userEmail"))
+
 
     const Reservation = {
       restaurantId: restaurantId,
@@ -59,8 +73,16 @@ const handleSubmit = async (e) => {
       menuSelection: bookingDetails.menuSelection || undefined,
       dinerId: Cookies.get("userId") || undefined,
       dinerName: Cookies.get("dinerName"),
-      dinerEmail : Cookies.get("dinerEmail")
+      dinerEmail : Cookies.get("userEmail")
     };
+
+    const Email = {
+        date: bookingDetails.date || undefined,
+        time: bookingDetails.time || undefined,
+        people: bookingDetails.people || undefined,
+        restaurant : restaurantData.name || undefined,
+        userEmail : Cookies.get("userEmail")
+    }
 
     console.log(Reservation)
 
@@ -73,6 +95,7 @@ const handleSubmit = async (e) => {
       if (data.data.success) {
         setOpenDialog(true);
         setFullDialog(false)
+        emailSend(Email);
       } else {
         setBookingDetails({ ...bookingDetails, error: data.error, remain : data.data.remain });
         setOpenDialog(false);
@@ -80,6 +103,17 @@ const handleSubmit = async (e) => {
       }
     }); // Add logic here to send booking details to your backend
   };
+
+  
+
+  const emailSend = async (Email) =>{
+    emailConfirm(Email).then((data)=>{
+      console.log(Email);
+      console.log(data);
+    }).catch((err) =>{
+      console.log(err);
+    })
+  }
 
   const handleClose = () => {
     setOpenDialog(false);
