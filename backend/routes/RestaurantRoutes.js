@@ -22,6 +22,8 @@ const {
 } = require("../Controller/restaurantController");
 const { route } = require("./ReservationRoutes");
 
+
+
 // This section will help you get a list of all the records.
 // get all restaurants
 

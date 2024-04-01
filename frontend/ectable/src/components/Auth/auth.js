@@ -29,12 +29,14 @@ export const authLogin = async (email, password, url) => {
         path: "/",
       });
       Cookies.set("userId", response.data.id, { expires: 1 / 12 });
+      Cookies.set("userEmail", response.data.email,{ expires: 1 / 12 } )
 
       console.log(Cookies.get());
 
       console.log("Access Token", Cookies.get("accessToken"));
       console.log("Refresh Token", Cookies.get("refreshToken"));
       console.log("User Id", Cookies.get("userId"));
+      console.log("userEmail", Cookies.get("userEmail"));
       // navigate(`/diner/${data.id}`)
       console.log(url);
       window.location.href = url;

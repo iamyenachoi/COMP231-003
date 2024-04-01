@@ -38,6 +38,7 @@ login.post("/diner/login", async (req, res) => {
         accessToken: accToken,
         refreshToken: refToken,
         id: check._id,
+        email : check.email
       });
     } else {
       console.log("Failed to Log in");
